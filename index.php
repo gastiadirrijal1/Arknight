@@ -658,6 +658,42 @@
                 </div>
             </div>
         </section>
+
+        
+    <section id="gallery" class="py-5 bg-dark text-white text-center">
+    <div class="container">
+        <h2 class="mb-5" style="font-family: 'Oswald', sans-serif;">DAFTAR OPERATOR (GALLERY)</h2>
+        
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php
+                include "koneksi.php";
+                $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+                $hasil = mysqli_query($conn, $sql);
+                $active = "active"; // Class untuk item pertama
+                
+                while ($row = mysqli_fetch_assoc($hasil)) {
+                ?>
+                    <div class="carousel-item <?= $active ?>">
+                        <img src="img/<?= $row['gambar'] ?>" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Gallery Image">
+                    </div>
+                <?php
+                    $active = ""; // Hapus active setelah item pertama
+                }
+                ?>
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
         </main>
     
     <footer class="bg-theme-dark text-white py-4">
