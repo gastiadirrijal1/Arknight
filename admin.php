@@ -1,11 +1,23 @@
 <?php
 session_start();
+include "koneksi.php";
 
-// Cek apakah user sudah login
+// Cek login
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
+
+// 1. Ambil data User (Perhatikan tabel 'users')
+$u_user = $_SESSION['username'];
+$user = $conn->query("SELECT * FROM users WHERE username='$u_user'")->fetch_assoc();
+
+// 2. Hitung Artikel
+$jml_artikel = $conn->query("SELECT count(*) as total FROM artikel")->fetch_assoc()['total'];
+
+// 3. Hitung Gallery (Cek kalau tabel belum ada biar ga error fatal)
+$q_gal = $conn->query("SELECT count(*) as total FROM gallery");
+$jml_gallery = ($q_gal) ? $q_gal->fetch_assoc()['total'] : 0;
 ?>
 
 <!DOCTYPE html>
@@ -18,75 +30,98 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <style>
         body { background-color: #121212; color: white; font-family: 'Roboto', sans-serif; }
-        .navbar { border-bottom: 2px solid #E60000; }
         .welcome-section {
-            padding: 50px 0;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('bg.jpg');
+            padding: 40px 0;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('bg.jpg'); /* Pastikan ada bg.jpg atau hapus baris ini */
             background-size: cover;
-            border-bottom: 1px solid #333;
+            border-bottom: 2px solid #E60000;
         }
-        .card { background-color: #2C2C2C; border: 1px solid #444; color: white; }
+        .profile-pic {
+            width: 120px; height: 120px; object-fit: cover;
+            border: 4px solid #E60000;
+            box-shadow: 0 0 15px rgba(230, 0, 0, 0.5);
+        }
+        .stat-card {
+            background-color: #2C2C2C;
+            border: 1px solid #444;
+            transition: 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); border-color: #E60000; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-black py-3">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#"><i class="bi bi-shield-fill text-danger me-2"></i>RHODES SYSTEM</a>
-            <div class="ms-auto">
-                <span class="text-white me-3">Doctor <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong></span>
-                <a href="logout.php" class="btn btn-outline-danger btn-sm"><i class="bi bi-power"></i> Logout</a>
-            </div>
+            <span class="navbar-brand fw-bold mb-0 h1"><i class="bi bi-hexagon-fill text-danger"></i> RHODES ISLAND</span>
+            <a href="logout.php" class="btn btn-outline-danger btn-sm">LOGOUT</a>
         </div>
     </nav>
 
     <section class="welcome-section text-center">
         <div class="container">
-            <h1 class="display-4 fw-bold">CONTROL CENTER</h1>
-            <p class="lead text-muted">Selamat datang kembali, Doctor. Sistem siap menerima perintah.</p>
+            <?php if (!empty($user['foto']) && file_exists($user['foto'])): ?>
+                <img src="<?= $user['foto'] ?>" class="rounded-circle profile-pic mb-3">
+            <?php else: ?>
+                <img src="https://via.placeholder.com/120" class="rounded-circle profile-pic mb-3">
+            <?php endif; ?>
+            
+            <h2 class="fw-bold">Doctor <?= $user['username'] ?></h2>
+            <p class="text">Access Level: Administrator</p>
+            <a href="profil.php" class="btn btn-sm btn-outline-warning mt-2"><i class="bi bi-gear"></i> Edit Profil</a>
         </div>
     </section>
 
     <section class="py-5">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card p-3 h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-people-fill display-4 text-warning mb-3"></i>
-                            <h4>Data Operator</h4>
-                            <p class="text-muted small">Kelola data operator Rhodes Island.</p>
-                            <a href="index.php#gallery" class="btn btn-sm btn-light w-100">Lihat Data</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card p-3 h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-file-earmark-text-fill display-4 text-info mb-3"></i>
-                            <h4>Laporan Misi</h4>
-                            <p class="text-muted small">Baca laporan taktis terbaru.</p>
-                            <a href="index.php#reports" class="btn btn-sm btn-light w-100">Baca Laporan</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card p-3 h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-gear-wide-connected display-4 text-danger mb-3"></i>
-                            <h4>Kelola Artikel</h4>
-                            <p class="text-muted small">Kelola konten artikel di situs web.</p>
-                             <a href="kelola_artikel.php" class="btn btn-sm btn-light w-100">Kelola Artikel</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h4 class="mb-4 border-start border-4 border-danger ps-3">Dashboard Overview</h4>
             
-            <div class="mt-5 text-center">
-                 <a href="index.html" class="btn btn-outline-light">Kembali ke Halaman Utama (Public)</a>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="stat-card p-4 rounded d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="fw-bold display-4 text-danger"><?= $jml_artikel ?></h3>
+                            <span class="text text-uppercase">Total Artikel</span>
+                        </div>
+                        <i class="bi bi-file-earmark-text fs-1 text-secondary"></i>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="stat-card p-4 rounded d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="fw-bold display-4 text-info"><?= $jml_gallery ?></h3>
+                            <span class="text text-uppercase">Total Gallery</span>
+                        </div>
+                        <i class="bi bi-images fs-1 text-secondary"></i>
+                    </div>
+                </div>
             </div>
+
+            <div class="row mt-5 g-3">
+                <div class="col-md-4">
+                    <a href="kelola_artikel.php" class="btn btn-dark w-100 py-3 border border-secondary">
+                        <i class="bi bi-pencil-square mb-2 d-block fs-4 text-danger"></i> Kelola Artikel
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="kelola_gallery.php" class="btn btn-dark w-100 py-3 border border-secondary">
+                        <i class="bi bi-collection mb-2 d-block fs-4 text-info"></i> Kelola Gallery
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="index.php" class="btn btn-dark w-100 py-3 border border-secondary">
+                        <i class="bi bi-globe mb-2 d-block fs-4 text-success"></i> Lihat Website
+                    </a>
+                </div>
+            </div>
+
         </div>
     </section>
+
+    <footer class="text-center py-4 text-muted small border-top border-dark mt-5">
+        &copy; 2025 Rhodes Island Neural Network.
+    </footer>
 
 </body>
 </html>

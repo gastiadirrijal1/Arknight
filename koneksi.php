@@ -1,8 +1,8 @@
 <?php
 $host       = "localhost";
-$user       = "tgimyid_arknight";
+$user       = "ensawirm_arknight";
 $pass       = "admin123690";
-$database   = "tgimyid_arknight";
+$database   = "ensawirm_arknight";
 
 $conn = mysqli_connect($host, $user, $pass, $database);
 

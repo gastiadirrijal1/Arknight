@@ -514,101 +514,34 @@
         </div>
     </section>
 
-        <section id="gallery" class="bg-section-light py-5">
-            <div class="container">
-                <h2 class="text-center mb-5" style="font-family: 'Oswald', sans-serif;">DAFTAR OPERATOR YANG SIAP DI-DEPLOY</h2>
-                <div class="row g-4 align-items-stretch"> <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="amiya.jpg" class="card-img-top gallery-img" alt="Amiya">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">Amiya</h5>
-                                <p class="card-text"><small class="text-muted">6* Caster / Rhodes Island Leader</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="kalsit.jpg" class="card-img-top gallery-img" alt="Kal'tsit">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">Kal'tsit</h5>
-                                <p class="card-text"><small class="text-muted">6* Medic / Monst3r Summoner</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="Texas Alter.jpg" class="card-img-top gallery-img" alt="Texas">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">Texas</h5>
-                                <p class="card-text"><small class="text-muted">6* Specialis / Exsekutor</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="exsuis.jpg" class="card-img-top gallery-img" alt="Exusiai">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">Exusiai</h5>
-                                <p class="card-text"><small class="text-muted">6* Sniper / Penguin Logistics</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="silver ash.jpg" class="card-img-top gallery-img" alt="SilverAsh">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">SilverAsh</h5>
-                                <p class="card-text"><small class="text-muted">6* Guard / Kjerag Warlord</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="lapland.jpg" class="card-img-top gallery-img" alt="Lappland">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">Lappland</h5>
-                                <p class="card-text"><small class="text-muted">5* Guard / Siracusa Wolf</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="saria.jpg" class="card-img-top gallery-img" alt="Saria">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">Saria</h5>
-                                <p class="card-text"><small class="text-muted">6* Defender / Rhine Lab</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="mudrok.jpg" class="card-img-top gallery-img" alt="Mudrock">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">Mudrock</h5>
-                                <p class="card-text"><small class="text-muted">6* Defender / Former Reunion</small></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="card operator-card">
-                            <img src="specter.png" class="card-img-top gallery-img" alt="Specter">
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-bold" style="color: var(--ri-red);">Specter</h5>
-                                <p class="card-text"><small class="text-muted">5* Guard / Abyssal Hunter</small></p>
-                            </div>
+    <section id="gallery" class="py-5" style="background-color: #1c1c1c;">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col text-center">
+                    <h2 class="fw-bold text-white">DATABASE OPERATOR (GALLERY)</h2>
+                    <div style="width: 60px; height: 3px; background-color: #E60000; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row g-4">
+                <?php
+                include "koneksi.php";
+                $sql_g = "SELECT * FROM gallery";
+                $res_g = $conn->query($sql_g);
+                while($g = $res_g->fetch_assoc()){
+                ?>
+                <div class="col-md-4">
+                    <div class="card h-100 bg-dark text-white border-secondary">
+                        <img src="<?= $g['gambar'] ?>" class="card-img-top" style="height: 250px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-warning"><?= $g['judul'] ?></h5>
+                            <p class="card-text text-muted"><?= $g['deskripsi'] ?></p>
                         </div>
                     </div>
                 </div>
+                <?php } ?>
             </div>
-        </section>
+        </div>
+    </section>
 
         <section id="contact" class="py-5">
             <div class="container">
@@ -658,42 +591,6 @@
                 </div>
             </div>
         </section>
-
-        
-    <section id="gallery" class="py-5 bg-dark text-white text-center">
-    <div class="container">
-        <h2 class="mb-5" style="font-family: 'Oswald', sans-serif;">DAFTAR OPERATOR (GALLERY)</h2>
-        
-        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <?php
-                include "koneksi.php";
-                $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
-                $hasil = mysqli_query($conn, $sql);
-                $active = "active"; // Class untuk item pertama
-                
-                while ($row = mysqli_fetch_assoc($hasil)) {
-                ?>
-                    <div class="carousel-item <?= $active ?>">
-                        <img src="img/<?= $row['gambar'] ?>" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Gallery Image">
-                    </div>
-                <?php
-                    $active = ""; // Hapus active setelah item pertama
-                }
-                ?>
-            </div>
-            
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div>
-</section>
         </main>
     
     <footer class="bg-theme-dark text-white py-4">

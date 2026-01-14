@@ -19,14 +19,18 @@ if (isset($_GET['hapus'])) {
 <head>
     <title>Kelola Artikel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #121212; color: #ddd; }
+        .table { color: #ddd; }
+    </style>
 </head>
 <body class="p-5">
     <div class="container">
         <h2 class="mb-4">Manajemen Artikel Arknight</h2>
-        <a href="admin.php" class="btn btn-secondary mb-3">Kembali ke Dashboard</a>
+        <a href="admin.php" class="btn btn-secondary mb-3">Kembali ke Control Canter</a>
         <a href="tambah_artikel.php" class="btn btn-primary mb-3">Tambah Artikel Baru</a>
 
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-dark table-striped">
             <thead>
                 <tr>
                     <th>No</th>
